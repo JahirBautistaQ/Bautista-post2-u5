@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,8 +23,10 @@ public class LibroService {
         return repo.findAll();
     }
 
-    public Optional<Libro> findById(Long id) {
-        return repo.findById(id);
+    // 🔥 CAMBIO CLAVE
+    public Libro findById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Libro no encontrado: " + id));
     }
 
     public Libro save(Libro libro) {

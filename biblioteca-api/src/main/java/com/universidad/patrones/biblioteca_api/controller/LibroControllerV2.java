@@ -33,16 +33,16 @@ public class LibroControllerV2 {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LibroResponseDTO> obtener(@PathVariable Long id) {
-        return service.findById(id)
-                .map(mapper::toResponse)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public LibroResponseDTO obtener(@PathVariable Long id) {
+        // 🔥 aquí lanza excepción si no existe
+        return mapper.toResponse(service.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<LibroResponseDTO> crear(@RequestBody @Valid LibroRequestDTO dto) {
+
         Libro guardado = service.save(mapper.toEntity(dto));
+
         return ResponseEntity
                 .status(201)
                 .body(mapper.toResponse(guardado));
